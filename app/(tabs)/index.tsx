@@ -2,14 +2,14 @@ import { Image } from 'expo-image';
 import * as MediaLibrary from 'expo-media-library';
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 
 export default function Home() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [localAssets, setLocalAssets] = useState<MediaLibrary.Asset[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [endCursor, setEndCursor] = useState<string>();
-  const { loading, setLoading } = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (permissionResponse?.status !== 'granted') {
@@ -40,17 +40,15 @@ export default function Home() {
       <Stack.Screen options={{ title: 'Photos' }} />
       <FlatList
         data={localAssets}
-        renderItem={({ item }) => (
-          <Image source={{ uri: item.uri }} style={{ width: '25%', aspectRatio: 1 }} />
-        )}
-        numColumns={4}
-        //columnWrapperStyle={{ gap: 2 }}
-        //contentContainerStyle={{ gap: 2 }}
         columnWrapperClassName="gap-[2px]"
         contentContainerClassName="gap-[2px]"
         onEndReached={loadLocalAssets}
         refreshing={loading}
         onEndReachedThreshold={1}
+        numColumns={4}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item.uri }} style={{ width: '25%', aspectRatio: 1 }} />
+        )}
       />
     </>
   );
