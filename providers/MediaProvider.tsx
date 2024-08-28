@@ -4,10 +4,12 @@ import { createContext, PropsWithChildren, useContext, useState, useEffect } fro
 type MediaContextType = {
   assets: MediaLibrary.Asset[];
   loadLocalAssets: () => void;
+  getAssetById: (id: string) => MediaLibrary.Asset | undefined;
 };
 const MediaContext = createContext<MediaContextType>({
   assets: [],
   loadLocalAssets: () => {},
+  getAssetById: () => undefined,
 });
 
 export default function MediaContextProvider({ children }: PropsWithChildren) {
@@ -40,8 +42,13 @@ export default function MediaContextProvider({ children }: PropsWithChildren) {
     setEndCursor(assetsPage.endCursor);
     setLoading(false);
   };
+
+  const getAssetById = (id: string) => {
+    return localAssets.find((asset) => asset.id === id);
+  };
+
   return (
-    <MediaContext.Provider value={{ assets: localAssets, loadLocalAssets }}>
+    <MediaContext.Provider value={{ assets: localAssets, loadLocalAssets, getAssetById }}>
       {children}
     </MediaContext.Provider>
   );

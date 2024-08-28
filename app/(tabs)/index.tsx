@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
-import { Stack } from 'expo-router';
-import { FlatList } from 'react-native';
+import { Link, Stack } from 'expo-router';
+import { FlatList, Pressable } from 'react-native';
 
 import { useMedia } from '~/providers/MediaProvider';
 
@@ -15,11 +15,14 @@ export default function Home() {
         columnWrapperClassName="gap-[2px]"
         contentContainerClassName="gap-[2px]"
         onEndReached={loadLocalAssets}
-        //refreshing={loading}
         onEndReachedThreshold={1}
         numColumns={4}
         renderItem={({ item }) => (
-          <Image source={{ uri: item.uri }} style={{ width: '25%', aspectRatio: 1 }} />
+          <Link href={`/asset?id=${item.id}`} asChild>
+            <Pressable style={{ width: '25%' }}>
+              <Image source={{ uri: item.uri }} style={{ width: '100%', aspectRatio: 1 }} />
+            </Pressable>
+          </Link>
         )}
       />
     </>
