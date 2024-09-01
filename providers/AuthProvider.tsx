@@ -7,6 +7,7 @@ type AuthContextType = {
   session: Session | null;
   user: User | undefined;
 };
+
 const AuthContext = createContext<AuthContextType>({
   session: null,
   user: undefined,
@@ -24,6 +25,7 @@ export default function AuthContextProvider({ children }: PropsWithChildren) {
       setSession(session);
     });
   }, []);
+
   return (
     <AuthContext.Provider value={{ session, user: session?.user }}>{children}</AuthContext.Provider>
   );
