@@ -12,13 +12,15 @@ export default function AssetPage() {
 
   const asset = getAssetById(id);
 
+  let uri;
   if (!asset) {
     return <Text>Asset not found!</Text>;
   }
-  const uri = getImagekitUrlFromPath('', [
-    { width: 200, height: 200 },
-    { raw: 'l-text,i-anil,fs-30,l-end,co-ffffff' },
-  ]);
+  if (asset.isLocalAsset) {
+    uri = asset.uri;
+  } else {
+    uri = getImagekitUrlFromPath(asset.path, [{ width: 500 }]);
+  }
   return (
     <>
       <Stack.Screen
